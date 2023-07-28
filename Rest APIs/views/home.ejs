@@ -4,26 +4,52 @@
 <head>
   <title>Home Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+  <!-- Don't use this in production: -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Items List</h1>
-    <ul class="item-list">
-      <!-- Looping through each array item and display data on the page -->
-      <% items.forEach(item => { %>
-          <li class="item">
-            <a href="/detail?id=<%= item._id %>">
-              <h2 class="item-title"><%= item.name %></h2>
-              <ul class="item-details">
-                <li><strong>Make:</strong> <%= item.make %></li>
-                <li><strong>Model:</strong> <%= item.model %></li>
-                <li><strong>Year:</strong> <%= item.year %></li>
-              </ul>
-            </a>
-          </li>
-      <% }); %>
-    </ul>
-  </div>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    // Parse items data from EJS and convert to JSON format
+    const itemsData = JSON.parse(`<%- items %>`);
+
+     // Item component to render individual item details
+    const Item = ({ item }) => {
+      return (
+        <li className="item">
+          <a href={`/detail?id=${item._id}`}>
+            <h2 className="item-title">{item.name}</h2>
+            <ul className="item-details">
+              <li><strong>Make:</strong> {item.make}</li>
+              <li><strong>Model:</strong> {item.model}</li>
+              <li><strong>Year:</strong> {item.year}</li>
+            </ul>
+          </a>
+        </li>
+      );
+    }
+
+     // App component to render the entire items list
+    const App = () => {
+      return (
+        <div className="container">
+          <h1>Item List</h1>
+          <ul className="item-list">
+            {itemsData.map(item => {
+              return <Item key={item._id} item={item} />
+            })}
+          </ul>
+        </div>
+      );
+    }
+
+    // Render the App component inside the root element
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
 </body>
 </html>
