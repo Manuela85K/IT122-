@@ -18,38 +18,86 @@
     // Parse items data from EJS and convert to JSON format
     const itemsData = JSON.parse(`<%- items %>`);
 
-     // Item component to render individual item details
-    const Item = ({ item }) => {
+    // Detail component to render the selected item as form
+    const Detail = ({ selectedItem, setSelectedItem }) => {
+      const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        const updatedItem = { ...selectedItem, [name]: value };
+        setSelectedItem(updatedItem);
+      }
+
+      const handleClear = () => {
+        setSelectedItem(null);
+      }
+
       return (
-        <li className="item">
-          <a href={`/detail?id=${item._id}`}>
-            <h2 className="item-title">{item.name}</h2>
-            <ul className="item-details">
-              <li><strong>Make:</strong> {item.make}</li>
-              <li><strong>Model:</strong> {item.model}</li>
-              <li><strong>Year:</strong> {item.year}</li>
-            </ul>
-          </a>
-        </li>
-      );
+        <>
+          <h2>Edit Form</h2>
+          {selectedItem ? (
+            <form action="#">
+              <div>
+                <label htmlFor="name">Name:</label>
+                <input type="text" id="name" name="name" value={selectedItem.name} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label htmlFor="make">Make:</label>
+                <input type="text" id="make" name="make" value={selectedItem.make} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label htmlFor="model">Model:</label>
+                <input type="text" id="model" name="model" value={selectedItem.model} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label htmlFor="year">Year:</label>
+                <input type="number" id="year" name="year" value={selectedItem.year} onChange={handleInputChange} />
+              </div>
+              <button type="button" onClick={handleClear}>Clear</button>
+            </form>
+          ) : (
+            <p>Please select an item to edit.</p>
+          )}
+        </>
+      )
     }
 
-     // App component to render the entire items list
+    // List component to render individual item details
+    const List = ({ item, onItemClick }) => {
+      return (
+        <li className="item" onClick={() => onItemClick(item)}>
+          <h3 className="item-title">{item.name}</h3>
+          <ul className="item-details">
+            <li><strong>Make:</strong> {item.make}</li>
+            <li><strong>Model:</strong> {item.model}</li>
+            <li><strong>Year:</strong> {item.year}</li>
+          </ul>
+        </li>
+      )
+    }
+
+    // App component to render the entire items list
     const App = () => {
+      const [selectedItem, setSelectedItem] = React.useState(null);
+
+      const handleItemClick = (item) => {
+        setSelectedItem(item);
+      }
+
       return (
         <div className="container">
-          <h1>Item List</h1>
+          <h2>Item List</h2>  
           <ul className="item-list">
             {itemsData.map(item => {
-              return <Item key={item._id} item={item} />
-            })}
+              return <List key={item._id} item={item} onItemClick={handleItemClick} />
+            })} 
           </ul>
+
+          <Detail selectedItem={selectedItem} setSelectedItem={setSelectedItem} /> 
         </div>
-      );
+      )
     }
 
     // Render the App component inside the root element
-    ReactDOM.render(<App />, document.getElementById('root'));
+    ReactDOM.render(<App/>, document.getElementById("root"));
   </script>
 </body>
 </html>

@@ -12,7 +12,7 @@ body {
     padding: 20px;
 }
 
-h1 {
+h2 {
     font-size: 24px;
     margin-bottom: 20px;
     text-align: center;
@@ -28,7 +28,7 @@ ul.item-list ul {
     margin-left: -20px;
 }
 
-.item {
+.item, form {
     background: #fff;
     border-radius: 5px;
     margin-bottom: 20px;
@@ -36,10 +36,8 @@ ul.item-list ul {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.item-list a {
-    color: #333;
-    display: block;
-    text-decoration: none;
+.item {
+    cursor: pointer;
 }
 
 .item-title {
@@ -47,7 +45,7 @@ ul.item-list ul {
     margin-bottom: 10px;
 }
 
-.item-details li {
+.item-details li, form div {
     margin-bottom: 5px;
 }
 
@@ -55,13 +53,21 @@ ul.item-list ul {
     text-transform: capitalize;
 }
 
-.back-link {
-    margin-top: 20px;
-    text-align: center;
-    color: #007bff;
-    text-decoration: none;
+form input {
+    padding: 3px;
+    margin-left: 10px;
 }
 
-.back-link:hover {
-    text-decoration: underline;
+form button {
+    margin-top: 15px;
+    background: #333;
+    color: #fff;
+    padding: 7px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+form button:hover {
+    background: #575757;
 }

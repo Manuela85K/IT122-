@@ -24,18 +24,6 @@ app.get("/", (req, res) => {
     });
 });
 
-// Route to render detail page
-app.get("/detail", (req, res) => {
-  const itemId = req.query.id;
-  Item.findById(itemId)
-    .then(item => {
-      res.render("detail", { item });
-    })
-    .catch(error => {
-      res.status(500).json({ error: "An error occurred while fetching the item" });
-    });
-});
-
 // API to get all items as JSON data
 app.get("/api/items", (req, res) => {
   Item.find().lean()
